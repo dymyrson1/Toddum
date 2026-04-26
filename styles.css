@@ -1,0 +1,70 @@
+body {
+  font-family: Arial, sans-serif;
+  padding: 30px;
+  background: #f5f5f5;
+}
+
+h1 {
+  margin-bottom: 10px;
+}
+
+.controls {
+  margin-bottom: 15px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+button {
+  padding: 8px 14px;
+  border: 1px solid #999;
+  background: white;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+button:hover {
+  background: #eee;
+}
+
+table {
+  border-collapse: collapse;
+  background: white;
+  width: 100%;
+  max-width: 1100px;
+}
+
+th, td {
+  border: 1px solid #999;
+  height: 45px;
+  text-align: center;
+  min-width: 90px;
+}
+
+th {
+  background: #eee;
+  font-weight: bold;
+}
+
+.customer {
+  width: 200px;
+  text-align: left;
+  padding-left: 10px;
+  background: #f0f0f0;
+  font-weight: bold;
+}
+
+.week-cell {
+  background: #ddd;
+  font-weight: bold;
+}
+
+td[contenteditable="true"] {
+  background: #fff;
+  cursor: text;
+}
+
+td[contenteditable="true"]:focus {
+  outline: 2px solid #4a90e2;
+  background: #f9fcff;
+}

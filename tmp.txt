@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Таблиця замовлень</title>
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <h1>Таблиця замовлень</h1>
+
+  <div class="controls">
+    <button onclick="previousWeek()">← Попередній тиждень</button>
+    <strong id="weekText">Тиждень 1</strong>
+    <button onclick="nextWeek()">Наступний тиждень →</button>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th class="week-cell" id="weekCell">Тиждень 1</th>
+        <th>Позиція 1</th>
+        <th>Позиція 2</th>
+        <th>Позиція 3</th>
+        <th>Позиція 4</th>
+        <th>Позиція 5</th>
+        <th>Позиція 6</th>
+        <th>Позиція 7</th>
+        <th>Позиція 8</th>
+        <th>Позиція 9</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr>
+        <td class="customer">Замовник 1</td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+      </tr>
+
+      <tr>
+        <td class="customer">Замовник 2</td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+      </tr>
+
+      <tr>
+        <td class="customer">Замовник 3</td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+      </tr>
+
+      <tr>
+        <td class="customer">Замовник 4</td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+      </tr>
+
+      <tr>
+        <td class="customer">Замовник 5</td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+      </tr>
+
+      <tr>
+        <td class="customer">Замовник 6</td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+      </tr>
+
+      <tr>
+        <td class="customer">Замовник 7</td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+      </tr>
+
+      <tr>
+        <td class="customer">Замовник 8</td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+      </tr>
+
+      <tr>
+        <td class="customer">Замовник 9</td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+      </tr>
+
+      <tr>
+        <td class="customer">Замовник 10</td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+      </tr>
+
+      <tr>
+        <td class="customer">Замовник 11</td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+      </tr>
+
+      <tr>
+        <td class="customer">Замовник 12</td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+      </tr>
+    </tbody>
+  </table>
+
+    <script>
+        function getCurrentWeek() {
+            const now = new Date();
+
+            // Копія дати
+            const date = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()));
+
+            // ISO: тиждень починається з понеділка
+            const dayNum = date.getUTCDay() || 7;
+            date.setUTCDate(date.getUTCDate() + 4 - dayNum);
+
+            const yearStart = new Date(Date.UTC(date.getUTCFullYear(), 0, 1));
+            const weekNo = Math.ceil((((date - yearStart) / 86400000) + 1) / 7);
+
+            return weekNo;
+        }
+
+        let currentWeek = getCurrentWeek();
+
+        function updateWeek() {
+            document.getElementById("weekCell").textContent = "Тиждень " + currentWeek;
+            document.getElementById("weekText").textContent = "Тиждень " + currentWeek;
+        }
+
+        function previousWeek() {
+            if (currentWeek > 1) {
+            currentWeek--;
+            updateWeek();
+            }
+        }
+
+        function nextWeek() {
+            if (currentWeek < 53) {
+            currentWeek++;
+            updateWeek();
+            }
+        }
+
+        // Запуск при відкритті сторінки
+        updateWeek();
+    </script>
+    <script type="module" src="app.js"></script>
+
+</body>
+</html>
