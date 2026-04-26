@@ -23,13 +23,9 @@ const db = initializeFirestore(app, {
   experimentalForceLongPolling: true
 });
 
-// Тимчасові динамічні масиви.
-// Пізніше ми будемо завантажувати їх із Firestore.
 let customers = [];
 let products = [];
 
-// Стовпчики 8 і 9.
-// Індекси рахуються з нуля: 0,1,2,3,4,5,6,7,8
 const checkboxColumns = [6, 7];
 
 let currentWeek = getCurrentWeek();
@@ -42,8 +38,7 @@ const lockBtn = document.getElementById("lockBtn");
 const saveBtn = document.getElementById("saveBtn");
 const previousWeekBtn = document.getElementById("previousWeekBtn");
 const nextWeekBtn = document.getElementById("nextWeekBtn");
-
-
+const tableWrapper = document.querySelector(".table-wrapper");
 
 function getCurrentWeek() {
   const now = new Date();
@@ -63,7 +58,17 @@ function getCurrentWeek() {
 }
 
 function updateWeekText() {
-  weekText.textContent = "Тиждень " + currentWeek;
+  weekText.textContent = "Uke " + currentWeek;
+}
+
+function animateWeekChange(direction) {
+  if (!tableWrapper) return;
+
+  tableWrapper.classList.remove("slide-left", "slide-right");
+
+  requestAnimationFrame(() => {
+    tableWrapper.classList.add(direction === "next" ? "slide-left" : "slide-right");
+  });
 }
 
 function renderTable() {
@@ -74,7 +79,7 @@ function renderTable() {
 
   const weekHeader = document.createElement("th");
   weekHeader.className = "week-cell";
-  weekHeader.textContent = "Тиждень " + currentWeek;
+  weekHeader.textContent = "Uke " + currentWeek;
   headerRow.appendChild(weekHeader);
 
   products.forEach(product => {
@@ -99,7 +104,12 @@ function renderTable() {
       if (checkboxColumns.includes(productIndex)) {
         const checkbox = document.createElement("input");
         checkbox.type = "checkbox";
-        checkbox.disabled = true;
+        checkbox.disabled = false;
+
+        checkbox.addEventListener("change", async () => {
+          await handleCheckboxChange(checkbox);
+        });
+
         cell.appendChild(checkbox);
       } else {
         cell.contentEditable = "false";
@@ -114,14 +124,9 @@ function renderTable() {
 
 function setEditable(state) {
   const editableCells = document.querySelectorAll("#orderTable tbody td[contenteditable]");
-  const checkboxes = document.querySelectorAll("#orderTable tbody input[type='checkbox']");
 
   editableCells.forEach(cell => {
     cell.contentEditable = state ? "true" : "false";
-  });
-
-  checkboxes.forEach(checkbox => {
-    checkbox.disabled = !state;
   });
 }
 
@@ -129,7 +134,7 @@ function lockTable() {
   isEditing = false;
   setEditable(false);
   lockBtn.textContent = "🔒";
-  lockBtn.title = "Розблокувати редагування";
+  lockBtn.title = "Lås opp redigering";
   saveBtn.style.display = "none";
 }
 
@@ -137,7 +142,7 @@ function unlockTable() {
   isEditing = true;
   setEditable(true);
   lockBtn.textContent = "🔓";
-  lockBtn.title = "Заблокувати редагування";
+  lockBtn.title = "Lås redigering";
   saveBtn.style.display = "inline-block";
 }
 
@@ -218,11 +223,38 @@ async function loadTable() {
   }
 }
 
+async function saveTableSilently() {
+  const data = collectTableData();
+
+  await setDoc(doc(db, "weeks", "week_" + currentWeek), {
+    week: currentWeek,
+    customers: customers,
+    products: products,
+    checkboxColumns: checkboxColumns,
+    data: data,
+    updatedAt: serverTimestamp()
+  });
+}
+
+async function handleCheckboxChange(checkbox) {
+  const newValue = checkbox.checked;
+  const oldValue = !newValue;
+
+  const confirmed = confirm("Vil du lagre denne endringen?");
+
+  if (!confirmed) {
+    checkbox.checked = oldValue;
+    return;
+  }
+
+  await saveTableSilently();
+}
+
 async function saveTable() {
   const data = collectTableData();
 
-  let previewText = "Будуть збережені такі дані:\n\n";
-  previewText += "Тиждень: " + currentWeek + "\n\n";
+  let previewText = "Følgende data vil bli lagret:\n\n";
+  previewText += "Uke: " + currentWeek + "\n\n";
 
   data.forEach((row, index) => {
     const rowText = row.values
@@ -233,10 +265,10 @@ async function saveTable() {
       })
       .join(" | ");
 
-    previewText += `${row.customer || "Замовник " + (index + 1)}: ${rowText}\n`;
+    previewText += `${row.customer || "Kunde " + (index + 1)}: ${rowText}\n`;
   });
 
-  const confirmed = confirm(previewText + "\nПідтвердити збереження?");
+  const confirmed = confirm(previewText + "\nBekreft lagring?");
 
   if (!confirmed) {
     return;
@@ -253,7 +285,7 @@ async function saveTable() {
 
   lockTable();
 
-  alert("Дані збережено");
+  alert("Data lagret");
 }
 
 lockBtn.addEventListener("click", () => {
@@ -275,6 +307,7 @@ previousWeekBtn.addEventListener("click", async () => {
     updateWeekText();
     renderTable();
     await loadTable();
+    animateWeekChange("prev");
   }
 });
 
@@ -285,6 +318,7 @@ nextWeekBtn.addEventListener("click", async () => {
     updateWeekText();
     renderTable();
     await loadTable();
+    animateWeekChange("next");
   }
 });
 
@@ -304,7 +338,7 @@ async function loadSettings() {
 async function init() {
   updateWeekText();
 
-  await loadSettings();   // ← нове
+  await loadSettings();
 
   renderTable();
   lockTable();

@@ -1,25 +1,24 @@
 <!DOCTYPE html>
-<html lang="uk">
+<html lang="no">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Таблиця замовлень</title>
+  <title>Bestillingstabell</title>
 
   <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">  <link rel="stylesheet" href="styles.css?v=3">
 </head>
 <body>
 
-  <h1>Таблиця замовлень</h1>
+  <h1>Bestillingstabell</h1>
 
   <div class="controls">
-    <button id="previousWeekBtn">← Попередній тиждень</button>
-    <strong id="weekText">Тиждень 1</strong>
-    <button id="nextWeekBtn">Наступний тиждень →</button>
-  </div>
-
-  <div class="controls">
-    <button id="lockBtn" title="Розблокувати редагування">🔒</button>
-    <button id="saveBtn" style="display:none;">Зберегти</button>
+    <button id="previousWeekBtn">← Forrige uke</button>
+    <strong id="weekText">Uke 1</strong>
+    <button id="nextWeekBtn">Neste uke →</button>
   </div>
 
   <div class="table-wrapper">
@@ -27,6 +26,11 @@
       <thead id="tableHead"></thead>
       <tbody id="tableBody"></tbody>
     </table>
+  </div>
+
+  <div class="controls">
+    <button id="lockBtn" title="Lås opp redigering">🔒</button>
+    <button id="saveBtn" style="display:none;">Lagre</button>
   </div>
 
   <script type="module" src="app.js"></script>
