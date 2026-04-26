@@ -1,5 +1,4 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
-
 import {
   initializeFirestore,
   doc,
@@ -27,6 +26,7 @@ let customers = [];
 let products = [];
 
 const checkboxColumns = [6, 7];
+const weekCache = new Map();
 
 let currentWeek = getCurrentWeek();
 let isEditing = false;
@@ -40,14 +40,14 @@ const previousWeekBtn = document.getElementById("previousWeekBtn");
 const nextWeekBtn = document.getElementById("nextWeekBtn");
 const tableWrapper = document.querySelector(".table-wrapper");
 
+/* ===== WEEK ===== */
+
 function getCurrentWeek() {
   const now = new Date();
 
-  const date = new Date(Date.UTC(
-    now.getFullYear(),
-    now.getMonth(),
-    now.getDate()
-  ));
+  const date = new Date(
+    Date.UTC(now.getFullYear(), now.getMonth(), now.getDate())
+  );
 
   const dayNum = date.getUTCDay() || 7;
   date.setUTCDate(date.getUTCDate() + 4 - dayNum);
@@ -61,15 +61,21 @@ function updateWeekText() {
   weekText.textContent = "Uke " + currentWeek;
 }
 
+/* ===== ANIMATION ===== */
+
 function animateWeekChange(direction) {
   if (!tableWrapper) return;
 
   tableWrapper.classList.remove("slide-left", "slide-right");
 
-  requestAnimationFrame(() => {
-    tableWrapper.classList.add(direction === "next" ? "slide-left" : "slide-right");
-  });
+  void tableWrapper.offsetWidth;
+
+  tableWrapper.classList.add(
+    direction === "next" ? "slide-left" : "slide-right"
+  );
 }
+
+/* ===== TABLE ===== */
 
 function renderTable() {
   tableHead.innerHTML = "";
@@ -104,7 +110,6 @@ function renderTable() {
       if (checkboxColumns.includes(productIndex)) {
         const checkbox = document.createElement("input");
         checkbox.type = "checkbox";
-        checkbox.disabled = false;
 
         checkbox.addEventListener("change", async () => {
           await handleCheckboxChange(checkbox);
@@ -122,8 +127,12 @@ function renderTable() {
   });
 }
 
+/* ===== EDIT ===== */
+
 function setEditable(state) {
-  const editableCells = document.querySelectorAll("#orderTable tbody td[contenteditable]");
+  const editableCells = document.querySelectorAll(
+    "#orderTable tbody td[contenteditable]"
+  );
 
   editableCells.forEach(cell => {
     cell.contentEditable = state ? "true" : "false";
@@ -133,18 +142,24 @@ function setEditable(state) {
 function lockTable() {
   isEditing = false;
   setEditable(false);
+
   lockBtn.textContent = "🔒";
   lockBtn.title = "Lås opp redigering";
+
   saveBtn.style.display = "none";
 }
 
 function unlockTable() {
   isEditing = true;
   setEditable(true);
+
   lockBtn.textContent = "🔓";
   lockBtn.title = "Lås redigering";
+
   saveBtn.style.display = "inline-block";
 }
+
+/* ===== DATA ===== */
 
 function clearTableValues() {
   const rows = document.querySelectorAll("#orderTable tbody tr");
@@ -165,7 +180,6 @@ function clearTableValues() {
 
 function collectTableData() {
   const rows = document.querySelectorAll("#orderTable tbody tr");
-
   const data = [];
 
   rows.forEach((row, rowIndex) => {
@@ -211,20 +225,56 @@ function fillTable(data) {
   });
 }
 
-async function loadTable() {
+async function loadTable(week = currentWeek) {
   clearTableValues();
 
-  const docRef = doc(db, "weeks", "week_" + currentWeek);
+  if (weekCache.has(week)) {
+    fillTable(weekCache.get(week));
+    return;
+  }
+
+  const docRef = doc(db, "weeks", "week_" + week);
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists()) {
-    const savedData = docSnap.data().data;
-    fillTable(savedData);
+    const savedData = docSnap.data().data || [];
+    weekCache.set(week, savedData);
+
+    if (week === currentWeek) {
+      fillTable(savedData);
+    }
+  } else {
+    weekCache.set(week, []);
+
+    if (week === currentWeek) {
+      clearTableValues();
+    }
   }
+}
+
+function preloadNeighborWeeks() {
+  const weeksToPreload = [
+    currentWeek - 1,
+    currentWeek + 1
+  ].filter(week => week >= 1 && week <= 53 && !weekCache.has(week));
+
+  weeksToPreload.forEach(week => {
+    const docRef = doc(db, "weeks", "week_" + week);
+
+    getDoc(docRef).then(docSnap => {
+      if (docSnap.exists()) {
+        weekCache.set(week, docSnap.data().data || []);
+      } else {
+        weekCache.set(week, []);
+      }
+    });
+  });
 }
 
 async function saveTableSilently() {
   const data = collectTableData();
+
+  weekCache.set(currentWeek, data);
 
   await setDoc(doc(db, "weeks", "week_" + currentWeek), {
     week: currentWeek,
@@ -235,6 +285,8 @@ async function saveTableSilently() {
     updatedAt: serverTimestamp()
   });
 }
+
+/* ===== EVENTS ===== */
 
 async function handleCheckboxChange(checkbox) {
   const newValue = checkbox.checked;
@@ -253,26 +305,10 @@ async function handleCheckboxChange(checkbox) {
 async function saveTable() {
   const data = collectTableData();
 
-  let previewText = "Følgende data vil bli lagret:\n\n";
-  previewText += "Uke: " + currentWeek + "\n\n";
+  const confirmed = confirm("Bekreft lagring?");
+  if (!confirmed) return;
 
-  data.forEach((row, index) => {
-    const rowText = row.values
-      .map(value => {
-        if (value === true) return "✓";
-        if (value === false) return "-";
-        return value || "-";
-      })
-      .join(" | ");
-
-    previewText += `${row.customer || "Kunde " + (index + 1)}: ${rowText}\n`;
-  });
-
-  const confirmed = confirm(previewText + "\nBekreft lagring?");
-
-  if (!confirmed) {
-    return;
-  }
+  weekCache.set(currentWeek, data);
 
   await setDoc(doc(db, "weeks", "week_" + currentWeek), {
     week: currentWeek,
@@ -284,9 +320,9 @@ async function saveTable() {
   });
 
   lockTable();
-
-  alert("Data lagret");
 }
+
+/* ===== BUTTONS ===== */
 
 lockBtn.addEventListener("click", () => {
   if (isEditing) {
@@ -300,27 +336,39 @@ saveBtn.addEventListener("click", async () => {
   await saveTable();
 });
 
-previousWeekBtn.addEventListener("click", async () => {
+previousWeekBtn.addEventListener("click", () => {
   if (currentWeek > 1) {
     lockTable();
+
     currentWeek--;
     updateWeekText();
+
     renderTable();
-    await loadTable();
     animateWeekChange("prev");
+
+    loadTable(currentWeek).then(() => {
+      preloadNeighborWeeks();
+    });
   }
 });
 
-nextWeekBtn.addEventListener("click", async () => {
+nextWeekBtn.addEventListener("click", () => {
   if (currentWeek < 53) {
     lockTable();
+
     currentWeek++;
     updateWeekText();
+
     renderTable();
-    await loadTable();
     animateWeekChange("next");
+
+    loadTable(currentWeek).then(() => {
+      preloadNeighborWeeks();
+    });
   }
 });
+
+/* ===== SETTINGS ===== */
 
 async function loadSettings() {
   const customersDoc = await getDoc(doc(db, "settings", "customers"));
@@ -335,6 +383,8 @@ async function loadSettings() {
   }
 }
 
+/* ===== INIT ===== */
+
 async function init() {
   updateWeekText();
 
@@ -343,7 +393,8 @@ async function init() {
   renderTable();
   lockTable();
 
-  await loadTable();
+  await loadTable(currentWeek);
+  preloadNeighborWeeks();
 }
 
 init();
