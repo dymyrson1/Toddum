@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Таблиця замовлень</title>
+
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -17,184 +18,16 @@
   </div>
 
   <div class="controls">
-    <button id="lockBtn">🔒</button>
+    <button id="lockBtn" title="Розблокувати редагування">🔒</button>
     <button id="saveBtn" style="display:none;">Зберегти</button>
   </div>
 
-  <table id="orderTable">
-    <thead>
-      <tr>
-        <th class="week-cell" id="weekCell">Тиждень 1</th>
-        <th>Позиція 1</th>
-        <th>Позиція 2</th>
-        <th>Позиція 3</th>
-        <th>Позиція 4</th>
-        <th>Позиція 5</th>
-        <th>Позиція 6</th>
-        <th>Позиція 7</th>
-        <th>Позиція 8</th>
-        <th>Позиція 9</th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <tr>
-        <td class="customer">Замовник 1</td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-      </tr>
-
-      <tr>
-        <td class="customer">Замовник 2</td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-      </tr>
-
-      <tr>
-        <td class="customer">Замовник 3</td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-      </tr>
-
-      <tr>
-        <td class="customer">Замовник 4</td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-      </tr>
-
-      <tr>
-        <td class="customer">Замовник 5</td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-      </tr>
-
-      <tr>
-        <td class="customer">Замовник 6</td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-      </tr>
-
-      <tr>
-        <td class="customer">Замовник 7</td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-      </tr>
-
-      <tr>
-        <td class="customer">Замовник 8</td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-      </tr>
-
-      <tr>
-        <td class="customer">Замовник 9</td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-      </tr>
-
-      <tr>
-        <td class="customer">Замовник 10</td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-      </tr>
-
-      <tr>
-        <td class="customer">Замовник 11</td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-      </tr>
-
-      <tr>
-        <td class="customer">Замовник 12</td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-        <td contenteditable="false"></td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="table-wrapper">
+    <table id="orderTable">
+      <thead id="tableHead"></thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
 
   <script type="module" src="app.js"></script>
 
